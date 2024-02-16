@@ -1,0 +1,53 @@
+/* catppuccin theme start */
+@import url('https://unpkg.com/@catppuccin/palette/css/catppuccin.css');
+
+.n-bg-main {
+  background: var(--ctp-mocha-base);
+  color: var(--ctp-mocha-text);
+}
+
+.n-bg-s-0 {
+  background: var(--ctp-mocha-surface0);
+}
+.n-bg-s-1 {
+  background: var(--ctp-mocha-surface1);
+}
+.n-bg-s-2 {
+  background: var(--ctp-mocha-surface2);
+}
+
+.my-div {
+  color:        var(--ctp-mocha-text-hex);
+  background:   rgba(var(--ctp-macchiato-base-rgb) 0.9);
+  border-color: hsla(var(--ctp-frappe-red-hsl) 0.75);
+}
+
+/* catppuccin theme end */
+
+
+
+.table-game td{
+  height: 10rem;
+  width: 10rem;
+  border-width: 0.1rem;
+  border-color: black;
+  border-style: solid;
+  transition: background 0.3s;
+
+  text-align: center;
+  font-size: 70pt;
+}
+
+.bi-circle{
+  color: blue;
+}
+
+.bi-x-lg{
+  color: red;
+}
+
+.table-game td:hover{
+  cursor: pointer;
+  background: var(--ctp-mocha-overlay0);
+}
+

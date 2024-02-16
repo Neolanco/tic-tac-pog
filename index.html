@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <title>Tic Tac Toe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+
+    <!-- Einbinden der Bootstrap CSS-Dateien https://getbootstrap.com/docs/5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <!-- Einbinden unserer eigenen CSS -->
+    <link href="./res/style.css" rel="stylesheet">
+</head>
+
+<body class="n-bg-main d-flex justify-content-center align-items-center h-100">
+    <div
+        class="n-bg-s-0 rounded pt-3 ps-3 pe-3 pb-3 shadow d-flex justify-content-center align-items-center flex-column">
+        <h1>Tik Tac Toe</h1>
+
+        <div class="n-bg-s-0 rounded shadow p-2 d-flex flex-column align-items-center">
+            <b id="status" class="mb-2">-placeholderer-</b>
+            <table class="table-game m-1">
+                <tr>
+                    <td onclick="fieldClickedHandler(0)" id="0"></td>
+                    <td onclick="fieldClickedHandler(1)" id="1"></td>
+                    <td onclick="fieldClickedHandler(2)" id="2"></td>
+                </tr>
+                <tr>
+                    <td onclick="fieldClickedHandler(3)" id="3"></td>
+                    <td onclick="fieldClickedHandler(4)" id="4"></td>
+                    <td onclick="fieldClickedHandler(5)" id="5"></td>
+                </tr>
+                <tr>
+                    <td onclick="fieldClickedHandler(6)" id="6"></td>
+                    <td onclick="fieldClickedHandler(7)" id="7"></td>
+                    <td onclick="fieldClickedHandler(8)" id="8"></td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <div class="n-bg-s-0 rounded shadow p-1 d-flex flex-column align-items-center mt-3 w-100">
+            <p>Deine ID: <span id="peer-id1"></span></p>
+            <p><span id="peer-id"></span></p>
+            <div class="input-group p-3">
+                <input id="connect-id" type="text" class="n-bg-s-2 form-control" placeholder="Gegner ID">
+                <button class="btn btn-outline-primary" type="button" id="btn-connect" onclick="connectClickedHandler()">Verbinden</button>
+            </div>
+            <div class="p-1">
+                <button class="btn btn-danger" type="button" id="clear-button" onclick="restart()">Restart</button>
+            </div>
+        </div>
+
+        <!-- temp test start -->
+        <div class="n-bg-s-0 rounded shadow p-1 d-flex flex-column align-items-center mt-3 w-100">
+            <p>temp dev dinge</p>
+            <div class="p-1">
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="set-1-button" onclick="forceField(0)">1</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-2-button" onclick="forceField(1)">2</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-3-button" onclick="forceField(2)">3</button>
+                </div>
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="set-4-button" onclick="forceField(3)">4</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-5-button" onclick="forceField(4)">5</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-6-button" onclick="forceField(5)">6</button>
+                </div>
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="set-7-button" onclick="forceField(6)">7</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-8-button" onclick="forceField(7)">8</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-9-button" onclick="forceField(8)">9</button>
+                </div>
+
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="myTurn-button" onclick="myTurn()">me!</button>
+                    <button class="btn btn-outline-primary" type="button" id="yourTurn-button" onclick="yourTurn()">you!</button>
+                </div>
+
+            </div>
+        </div>
+        <!-- temp test end -->
+
+    </div>
+
+
+
+
+    </div>
+
+    <!-- Einbinden der Bootstrap JS-Datei -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!-- Wir verwenden PeerJS für den Multiplayer. Die Doku ist hier zu finden: https://peerjs.com/docs/#api-->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+
+    <!-- Einbinden unserer Spielelogik -->
+    <script src="./res/game.js"></script>
+</body>
+
+</html>
