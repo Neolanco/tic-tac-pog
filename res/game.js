@@ -2,9 +2,9 @@ let activeGame = false;
 let hasTurn = false;
 let gameFields = [];
 let ownPoints = 0;
-let enemyPoints = 0;
+let opponentPoints = 0;
 let ownSymbol = "circle";
-let enemySymbol = "cross";
+let opponentSymbol = "cross";
 let gameState = "clear"
 let peer;
 let connection;
@@ -92,7 +92,7 @@ function connectClickedHandler() {
 
 function setStatus(text) {
     let statusElement = document.getElementById("status");
-    statusElement.textContent = text + " " + ownPoints + "-" + enemyPoints;
+    statusElement.textContent = text + " " + ownPoints + "-" + opponentPoints;
 }
 
 
@@ -159,7 +159,7 @@ async function setupPeer() {
 
     peer.on("connection", playerJoined);
 
-    // esma wardn bis broker verbunden is
+    // wait for connection
     await new Promise(resolve => peer.on("open", resolve));
 
     return peer;
@@ -179,11 +179,11 @@ async function playerJoined(con) {
     connection = con;
     displayConnectionStatus();
 
-    enemySymbol = "circle";
+    opponentSymbol = "circle";
     ownSymbol = "cross";
 
     ownPoints = 0;
-    enemyPoints = 0;
+    opponentPoints = 0;
 
     startGame;
     randomizeTurn();
@@ -197,10 +197,10 @@ async function joinPlayer(id) {
     displayConnectionStatus();
 
     ownSymbol = "circle";
-    enemySymbol = "cross";
+    opponentSymbol = "cross";
 
     ownPoints = 0;
-    enemyPoints = 0;
+    opponentPoints = 0;
 
     startGame();
 }
@@ -219,26 +219,26 @@ function randomizeTurn() {
 function dataRecived(data) {
     console.log(data)
 
-    let objekt = JSON.parse(data)
+    let object = JSON.parse(data)
 
-    if (objekt.action == "has-turn") {
-        setHasTurn(objekt.value)
+    if (object.action == "has-turn") {
+        setHasTurn(object.value)
     }
-    else if (objekt.action == "set-field") {
-        setField(objekt.value, enemySymbol)
+    else if (object.action == "set-field") {
+        setField(object.value, opponentSymbol)
     }
-    else if (objekt.action == "restart") {
+    else if (object.action == "restart") {
         startGame();
     }
 }
 
 function sendMessage(action, value) {
-    let objekt = {
+    let object = {
         action: action,
         value: value,
     };
 
-    let objectString = JSON.stringify(objekt);
+    let objectString = JSON.stringify(object);
     connection.send(objectString);
 }
 
@@ -259,7 +259,7 @@ function displayConnectionStatus() {
 
 
 
-/* temp test start */
+// temp test start
 function oClicked() {
     ownSymbol = "circle"
 
@@ -283,4 +283,4 @@ function yourTurn () {
     hasTurn = false
 }
 
-/* temp test end */
+// temp test end
