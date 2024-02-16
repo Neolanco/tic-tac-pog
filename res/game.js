@@ -87,7 +87,7 @@ function fieldClickedHandler(field) {
 
 function connectClickedHandler() {
     let id = document.getElementById("connect-id").value
-    joinPlayer(id)
+    connectedHost(id)
 }
 
 function setStatus(text) {
@@ -157,7 +157,7 @@ function checkDraw() {
 async function setupPeer() {
     let peer = new Peer();
 
-    peer.on("connection", playerJoined);
+    peer.on("connection", connectedClient);
 
     // wait for connection
     await new Promise(resolve => peer.on("open", resolve));
@@ -174,7 +174,7 @@ async function setupConnection(con) {
     await new Promise(resolve => con.on("open", resolve));
 }
 
-async function playerJoined(con) {
+async function connectedClient(con) {
     await setupConnection(con);
     connection = con;
     displayConnectionStatus();
@@ -189,7 +189,7 @@ async function playerJoined(con) {
     randomizeTurn();
 }
 
-async function joinPlayer(id) {
+async function connectedHost(id) {
     if (!peer || !peer.id) { return; }
     
     connection = peer.connect(id);
