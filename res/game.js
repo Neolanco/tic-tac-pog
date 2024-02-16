@@ -260,6 +260,14 @@ function displayConnectionStatus() {
 
 
 // temp test start
+function hideDevTools() {
+    let devTools = document.getElementById("dev-tools")
+    devTools.style.display = "none";
+}
+function showDevTools() {
+    let devTools = document.getElementById("dev-tools")
+    devTools.style.display = "block";
+}
 function oClicked() {
     ownSymbol = "circle"
 
