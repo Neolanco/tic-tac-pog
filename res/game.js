@@ -10,6 +10,7 @@ let looser = false;
 let peer;
 let connection;
 
+
 startGame();
 initPeerJS();
 
