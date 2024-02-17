@@ -6,6 +6,7 @@ let opponentPoints = 0;
 let ownSymbol = "circle";
 let opponentSymbol = "cross";
 let gameState = "clear"
+let looser = false;
 let peer;
 let connection;
 
@@ -18,26 +19,37 @@ async function initPeerJS() {
     displayConnectionStatus();
 }
 
+
 function startGame() {
+    console.log("started game");
     activeGame = true;
-    hasTurn = true;
+
+    if (looser) {
+        hasTurn = true; 
+        setStatus("Du bist am Zug");
+        console.log("your turn");
+    } else { 
+        hasTurn = false; 
+        setStatus("Der Gegner ist am Zug");
+        console.log("opponent begins");
+    };
+
     clearGame();
-    setStatus("game");
-    gameState = "clear"
+    gameState = "clear";
 }
 
 function restart() {
     startGame();
-    sendMessage("restart")
+    sendMessage("restart");
 }
 
 function endGame() {
-    activeGame = false
+    activeGame = false;
 }
 
 function clearGame() {
     for(let cnt = 0; cnt < 9; cnt++) {
-        setField(cnt, "clear")
+        setField(cnt, "clear");
     }
 }
 
@@ -58,15 +70,10 @@ function setField(field, symbol) {
 
     gameFields[field] = symbol;
 
-    if (symbol == "clear") {return}
+    if (symbol == "clear") { return }
 
     gameState = checkWinner()
 
-    if (gameState != "clear") {
-        setStatus(gameState + " won");
-        endGame();
-        return;
-    }
     if (checkDraw() == true) {
         gameState = "draw";
         setStatus("draw");
@@ -74,14 +81,29 @@ function setField(field, symbol) {
         return;
     }
 
+    if (gameState == "clear") { return }
+
+    if (gameState == ownSymbol) {
+        ownPoints = ownPoints + 1;
+        setStatus("Du hast gewonnen");
+        looser = false;
+        endGame();
+        return;
+    } else {
+        opponentPoints = opponentPoints + 1;
+        setStatus("Du hast verloren");
+        looser = true;
+        endGame();
+        return;
+    }
 }
 
 function fieldClickedHandler(field) {
     if (!hasTurn || !activeGame || gameFields[field] != "clear") return;
 
     setField(field, ownSymbol);
-    sendMessage("set-field", field)
-    setHasTurn(false)
+    sendMessage("set-field", field);
+    setHasTurn(false);
     sendMessage("has-turn", true);
 }
 
@@ -95,18 +117,17 @@ function setStatus(text) {
     statusElement.textContent = text + " " + ownPoints + "-" + opponentPoints;
 }
 
-
 function setHasTurn(value) {
     hasTurn = value
 
     if (gameState != "clear") {
         return;
     }
-
     if (hasTurn == false) {
-        setStatus("gegner is dran");
-    }else{
-        setStatus("mach ma eier");
+        setStatus("Der Gegner ist am Zug");
+    }
+    else {
+        setStatus("Du bist am Zug");
     }
 }
 
@@ -118,14 +139,13 @@ function setConnectInput(value) {
         inputElement.removeAttribute("disabled");
         bntElement.removeAttribute("disabled");
     }
-    else{
+    else {
         inputElement.setAttribute("disabled", null);  
         bntElement.setAttribute("disabled", null);
     }
 
 
 }
-
 
 function checkWinner() {
     if (gameFields[0] == gameFields[1] && gameFields[0] == gameFields[2] && gameFields[0] != "clear") {return gameFields[0];}
@@ -136,7 +156,7 @@ function checkWinner() {
     if (gameFields[2] == gameFields[5] && gameFields[2] == gameFields[8] && gameFields[2] != "clear") {return gameFields[2];}
     if (gameFields[0] == gameFields[4] && gameFields[0] == gameFields[8] && gameFields[0] != "clear") {return gameFields[0];}
     if (gameFields[2] == gameFields[4] && gameFields[2] == gameFields[6] && gameFields[2] != "clear") {return gameFields[2];}
-    return "clear"
+    return "clear";
 }
 
 function checkDraw() {
@@ -153,7 +173,6 @@ function checkDraw() {
     return false;
 }
 
-
 async function setupPeer() {
     let peer = new Peer();
 
@@ -168,7 +187,7 @@ async function setupPeer() {
 async function setupConnection(con) {
     console.log(con)
     con.on("error", console.error);
-    con.on("data", dataRecived);
+    con.on("data", dataReceived);
     con.on("close", endGame);
 
     await new Promise(resolve => con.on("open", resolve));
@@ -185,7 +204,7 @@ async function connectedClient(con) {
     ownPoints = 0;
     opponentPoints = 0;
 
-    startGame;
+    startGame();
     randomizeTurn();
 }
 
@@ -216,16 +235,16 @@ function randomizeTurn() {
     }
 }
 
-function dataRecived(data) {
-    console.log(data)
+function dataReceived(data) {
+    console.log("received: " + data);
 
-    let object = JSON.parse(data)
+    let object = JSON.parse(data);
 
     if (object.action == "has-turn") {
-        setHasTurn(object.value)
+        setHasTurn(object.value);
     }
     else if (object.action == "set-field") {
-        setField(object.value, opponentSymbol)
+        setField(object.value, opponentSymbol);
     }
     else if (object.action == "restart") {
         startGame();
@@ -236,59 +255,69 @@ function sendMessage(action, value) {
     let object = {
         action: action,
         value: value,
-    };
+    }
 
     let objectString = JSON.stringify(object);
     connection.send(objectString);
+    console.log("sent: " + objectString);
 }
 
 function displayConnectionStatus() {
     if (peer && peer.id) {
-        let idElement = document.getElementById("peer-id")
+        let idElement = document.getElementById("peer-id");
         idElement.textContent = peer.id;
     }
-
     if(connection && connection.open) {
-        setConnectInput(false)
+        setConnectInput(false);
     }
-    else{
-        setConnectInput(true)
-        setStatus("kein gegenGamer")
+    else {
+        setConnectInput(true);
+        setStatus("Verbinde dich mit einem anderen Spieler");
     }
+}
+
+function copyID() {
+    let peerID = document.getElementById("peer-id").textContent;
+    navigator.clipboard.writeText(peerID);
 }
 
 
 
 // temp test start
 function hideDevTools() {
-    let devTools = document.getElementById("dev-tools")
-    devTools.style.display = "none";
-}
-function showDevTools() {
-    let devTools = document.getElementById("dev-tools")
-    devTools.style.display = "block";
-}
-function oClicked() {
-    ownSymbol = "circle"
+    let devTools = document.getElementById("dev-tools");
+    devTools.style.visibility = "hidden";
 
+    //console.log(devTools)
+    //devTools.style.display = "none"
+    //console.log(devTools.style.display = "none")
 }
+
+function showDevTools() {
+    let devTools = document.getElementById("dev-tools");
+    devTools.style.visibility = "visible";
+}
+
+function oClicked() {
+    ownSymbol = "circle";
+}
+
 function xClicked() {
-    ownSymbol = "cross"
+    ownSymbol = "cross";
 }
 
 function forceField (id) {
-    sendMessage("set-field", id)
-    setField(id, ownSymbol)
+    sendMessage("set-field", id);
+    setField(id, ownSymbol);
 }
 
 function myTurn () {
-    sendMessage("has-turn", false)
-    hasTurn = true
+    sendMessage("has-turn", false);
+    hasTurn = true;
 }
 
 function yourTurn () {
-    sendMessage("has-turn", true)
-    hasTurn = false
+    sendMessage("has-turn", true);
+    hasTurn = false;
 }
-
 // temp test end

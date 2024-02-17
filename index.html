@@ -15,14 +15,13 @@
     <link href="./res/style.css" rel="stylesheet">
 </head>
 
-<body class="n-bg-main d-flex justify-content-center align-items-center h-100">
-    <div
-        class="n-bg-s-0 rounded pt-3 ps-3 pe-3 pb-3 shadow d-flex justify-content-center align-items-center flex-column">
+<body class="n-bg-main d-flex justify-content-center align-items-center ">
+    <div class="n-bg-s-0 rounded p-3 m-5 shadow d-flex justify-content-center align-items-center flex-column">
         <h1>Tik Tac Toe</h1>
 
         <div class="n-bg-s-0 rounded shadow p-2 d-flex flex-column align-items-center">
-            <b id="status" class="mb-2">-placeholderer-</b>
-            <table class="table-game m-1">
+            <b id="status" class="mb-2">-</b>
+            <table class="table-game m-1 shadow-sm">
                 <tr>
                     <td onclick="fieldClickedHandler(0)" id="0"></td>
                     <td onclick="fieldClickedHandler(1)" id="1"></td>
@@ -42,49 +41,51 @@
         </div>
 
 
-
         <div class="n-bg-s-0 rounded shadow p-1 d-flex flex-column align-items-center mt-3 w-100">
-            <p>Deine ID: <span id="peer-id1"></span></p>
-            <p><span id="peer-id"></span></p>
-            <div class="input-group p-3">
+            <p class="m-3">
+                Deine ID: 
+                <span id="peer-id" onclick="copyID()"></span>
+            </p>
+            <div class="input-group px-3">
                 <input id="connect-id" type="text" class="n-bg-s-2 form-control" placeholder="Gegner ID">
                 <button class="btn btn-outline-primary" type="button" id="btn-connect" onclick="connectClickedHandler()">Verbinden</button>
             </div>
-            <div class="p-1">
+            <div class="m-3 shadow">
                 <button class="btn btn-danger" type="button" id="clear-button" onclick="restart()">Restart</button>
             </div>
         </div>
 
+
+    </div>
+
         <!-- temp test start -->
-        <div class="n-bg-s-0 rounded shadow p-1 d-flex flex-column align-items-center mt-3 w-100" id="dev-tools">
+        <div id="dev-tools" class="n-bg-s-0 p-1 m-3 rounded shadow-sm d-flex justify-content-center align-items-center flex-column position-absolute top-40 end-0">
             <p>temp dev dinge</p>
+            <div>
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="set-1-button dev-tools" onclick="forceField(0)">1</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-2-button dev-tools" onclick="forceField(1)">2</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-3-button dev-tools" onclick="forceField(2)">3</button>
+                </div>
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="set-4-button dev-tools" onclick="forceField(3)">4</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-5-button dev-tools" onclick="forceField(4)">5</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-6-button dev-tools" onclick="forceField(5)">6</button>
+                </div>
+                <div class="p-1">
+                    <button class="btn btn-outline-primary" type="button" id="set-7-button dev-tools" onclick="forceField(6)">7</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-8-button dev-tools" onclick="forceField(7)">8</button>
+                    <button class="btn btn-outline-primary" type="button" id="set-9-button dev-tools" onclick="forceField(8)">9</button>
+                </div>
+            </div>
             <div class="p-1">
-                <div class="p-1">
-                    <button class="btn btn-outline-primary" type="button" id="set-1-button" onclick="forceField(0)">1</button>
-                    <button class="btn btn-outline-primary" type="button" id="set-2-button" onclick="forceField(1)">2</button>
-                    <button class="btn btn-outline-primary" type="button" id="set-3-button" onclick="forceField(2)">3</button>
-                </div>
-                <div class="p-1">
-                    <button class="btn btn-outline-primary" type="button" id="set-4-button" onclick="forceField(3)">4</button>
-                    <button class="btn btn-outline-primary" type="button" id="set-5-button" onclick="forceField(4)">5</button>
-                    <button class="btn btn-outline-primary" type="button" id="set-6-button" onclick="forceField(5)">6</button>
-                </div>
-                <div class="p-1">
-                    <button class="btn btn-outline-primary" type="button" id="set-7-button" onclick="forceField(6)">7</button>
-                    <button class="btn btn-outline-primary" type="button" id="set-8-button" onclick="forceField(7)">8</button>
-                    <button class="btn btn-outline-primary" type="button" id="set-9-button" onclick="forceField(8)">9</button>
-                </div>
-
-                <div class="p-1">
-                    <button class="btn btn-outline-primary" type="button" id="myTurn-button" onclick="myTurn()">me!</button>
-                    <button class="btn btn-outline-primary" type="button" id="yourTurn-button" onclick="yourTurn()">you!</button>
-                </div>
-
+                <button class="btn btn-outline-primary" type="button" id="myTurn-button dev-tools" onclick="myTurn()">me!</button>
+                <button class="btn btn-outline-primary" type="button" id="yourTurn-button dev-tools" onclick="yourTurn()">you!</button>
             </div>
         </div>
         <!-- temp test end -->
 
-    </div>
+    
 
 
 
